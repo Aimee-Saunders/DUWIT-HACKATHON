@@ -38,10 +38,15 @@
 }
 
 .timeslot{
-  width: 125px;
-  height: 100%;
+  width: 25%;
   background-color: pink;
   border: black solid;
-  border-radius: 20%;
-  margin: 1%;
+  border-radius: 10%;
+  margin: 0.5%;
+}
+
+.Row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
