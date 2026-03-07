@@ -38,15 +38,20 @@
 }
 
 .timeslot{
-  width: 25%;
-  background-color: pink;
-  border: black solid;
+  background-color: rgb(255, 227, 231);
+  border: rgb(251, 198, 198) solid;
   border-radius: 10%;
   margin: 0.5%;
+  font-size: 10px;
 }
 
-.Row{
+.scheduler {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+}
+
+.Col {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 }
