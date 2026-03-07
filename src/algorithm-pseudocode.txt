@@ -1,0 +1,55 @@
+SCHEDULING ALGORITHM
+This is called when a new event is added
+
+Terminology:
+    Time slot - two times between which an event occurs
+    Time interval - an interval of time within a time slot that is the length of the duration of a specific event
+    Hard event - an event which must occur in a specific time slot
+    Soft event - an event which can occur in any interval in a time slot
+    Current event - the event currently being scheduled
+    Conflicting event - an event within the timeslot of the current event
+    Dummy event - a hard event present in a recursive call to block off a time interval
+    Flag - stored with an event, describing whether it is hard or soft
+
+
+IF THE EVENT IS HARD 
+    IF TIMESLOT IS FREE
+        - Add hard event to schedule with flag hard
+        END (SUCCESS)
+
+    ELSEIF ALL CONFLICTING EVENTS ARE HARD
+        - Refuse new event
+        - Offer to schedule as soft event, provide space for acceptable time period
+        END (FAILURE)
+
+    ELSE
+        UNTIL NO SOFT CONFLICTING EVENTS REMAIN
+            - Start with chronologically first soft conflicting event
+            RECURSE - Call algorithm with a dummy event with hard flag present in the soft conflicting event's interval and soft conflicting event as current event
+            IF FAILURE
+                - Notify user of clash and ask if they wish to delete soft event
+                END (FAILURE)
+            - Move to next soft conflicting event
+        - Replace dummy events with hard event with hard flag
+        END (SUCCESS)
+            
+IF THE EVENT IS SOFT 
+    UNTIL END OF TIMESLOT
+        - Start from first interval
+        IF CURRENT INTERVAL IS FREE
+            - Add soft event to schedule in that interval with a soft marker
+            END (FAILURE)
+        - Check the next interval
+
+    UNTIL NO SOFT CONFLICTING EVENTS REMAIN
+        - Start with first soft conflicting event
+        IF CONFLICTING EVENT LONGER THAN OR SAME DURATION AS CURRENT EVENT
+        RECURSE - Call algorithm with a dummy event with hard flag present in the soft conflicting event's interval and soft conflicting event as current event
+        IF SUCCESS
+            - 
+        END
+    ELSE
+        UNTIL FREE INTERC
+
+
+
