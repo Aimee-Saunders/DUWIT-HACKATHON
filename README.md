@@ -72,6 +72,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 =======
 # DUWIT-HACKATHON
 >>>>>>> f3f7c5f1a84ea3e027496a7a976910c4268c916b
-
-
-Test
