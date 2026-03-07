@@ -38,7 +38,10 @@
 }
 
 .timeslot{
-  width: 100px;
-  height: 100px;
+  width: 125px;
+  height: 100%;
   background-color: pink;
+  border: black solid;
+  border-radius: 20%;
+  margin: 1%;
 }
