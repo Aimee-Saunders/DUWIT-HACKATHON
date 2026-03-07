@@ -1,10 +1,25 @@
+import logo from './logo.svg';
 import './App.css';
-import P5Timer from './p5timer';
 
+function TimeSlot(){
+  return(
+    <div class="timeslot">
+      <p>This is a time slot</p>
+    </div>
+  )
+}
 function App() {
+  const [grid, setGrid] = useState(createGrid());
+  const [tasks, setTasks] = useState([]);
+  const time_labels = [];
+  for (let i = 0; i < 24; i++){
+    time_labels.push({title:(i+":00-"+(i+1)+":00")});
+  }
   return (
     <div className="App">
-      <P5Timer />
+      <div>
+        <TimeSlot />
+      </div>
     </div>
   );
 }
