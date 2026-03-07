@@ -37,15 +37,23 @@
   }
 }
 
-.timeslot{
-  background-color: rgb(255, 227, 231);
-  border: rgb(251, 198, 198) solid;
-  border-radius: 10%;
-  margin: 0.5%;
-  font-size: 10px;
+.timeslot {
+  width: 100%;
+  height: 60px; 
+  border: 1px solid #ccc;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  white-space: nowrap;    
+  overflow: hidden;        
+  text-overflow: ellipsis;     
 }
 
+
 .scheduler {
+  margin: 40px;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 5px;

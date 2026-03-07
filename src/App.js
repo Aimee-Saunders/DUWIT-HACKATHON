@@ -29,59 +29,25 @@ function App() {
   const [grid, setGrid] = useState(createGrid());
   const time_labels = [];
   for (let i = 0; i < 24; i++){
-    time_labels.push({title:(i+":00")});
+    time_labels.push({title:(i+":00-"+(i+1)+":00")});
   }
   return (
     <div className="App">
       <div className="scheduler">
-        <div className="Col">
+        <div className="Col times">
           <p>Times</p>
           {time_labels.map((item)=>(
             <TimeSlot key={item.id} title={item.title}/>
           ))}
           </div>
+        {grid.map((column)=>(
         <div className="Col">
-          <p>Monday</p>
+          <p>{column[0].day}</p>
           {grid[0].map((item)=>(
             <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
           ))}
           </div>
-        <div className="Col">
-          <p>Tuesday</p>
-          {grid[1].map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
-          ))}
-          </div>
-        <div className="Col">
-          <p>Wednesday</p>
-          {grid[1].map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
-          ))}
-          </div>
-        <div className="Col">
-          <p>Thursday</p>
-          {grid[1].map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
-          ))}
-          </div>
-        <div className="Col">
-          <p>Friday</p>
-          {grid[1].map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
-          ))}
-          </div>
-        <div className="Col">
-          <p>Saturday</p>
-          {grid[1].map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
-          ))}
-          </div>
-        <div className="Col">
-          <p>Sunday</p>
-          {grid[1].map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
-          ))}
-          </div>
+        ))}
       </div>
     </div>
   );
