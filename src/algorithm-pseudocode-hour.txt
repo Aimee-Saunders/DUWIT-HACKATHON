@@ -44,12 +44,5 @@ IF THE EVENT IS SOFT
             IF SUCCESS
                 - Change hard flag of current event to soft flag
                 END (SUCCESS)
-
-    UNTIL NO SOFT CONFLICTING EVENTS REMAIN
-        - Start with first soft conflicting event
-        IF CONFLICTING EVENT LONGER THAN OR SAME DURATION AS CURRENT EVENT
-        RECURSE - Call algorithm with a dummy event with hard flag present in the soft conflicting event's interval and soft conflicting event as current event
-        IF SUCCESS
-            END (SUCCESS)
     
     END (FAILURE)

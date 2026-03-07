@@ -1,26 +1,65 @@
-function ScheduleTaskHard(grid,currentDay,currentTime){
+export function ScheduleTaskHard(grid,currentDay,currentTime,currentTitle){
+    //let newGrid = [...grid];
+    let newGrid = grid.map(col => col.map(cell => ({ ...cell })));
+    let success=false
+
     if(grid[currentDay][currentTime].title=="_"){
-        return currentDay, currentTime, True
+        newGrid[currentDay][currentTime] = {
+        ...newGrid[currentDay][currentTime],
+        title:currentTitle,
+        flag:"hard",
+        Htime:currentTime,
+        Hday:currentDay
+        }
+        return [newGrid, true]
     }
     else if(grid[currentDay][currentTime].flag=="hard"){
-        return currentDay, currentTime, False
+        return [grid, false]
     }
     else{
-        ScheduleTaskSoft(grid,)
+        let conflicting=grid[currentDay][currentTime]
+        newGrid[currentDay][currentTime] = {
+        ...newGrid[currentDay][currentTime],
+        title:currentTitle,
+        flag:"hard",
+        Htime:currentTime,
+        Hday:currentDay
+        }
+        const[updatedGrid, softSuccess] = ScheduleTaskSoft(newGrid,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
+        newGrid=updatedGrid
+        success=softSuccess
+        if(success){
+            return [newGrid, true]
+        }
+        else{
+            return [grid, false]
+        }
     }
-
 }
 
-function ScheduleTaskSoft(grid,startTime,startDay,endTime,endDay){
-    currentDay=startDay
-    currentTime=startTime
+export function ScheduleTaskSoft(grid,startTime,startDay,endTime,endDay,currentTitle){
+    //let newGrid = [...grid];
+    let newGrid = grid.map(col => col.map(cell => ({ ...cell })));
+    let success = false
+    let currentDay=startDay
+    let currentTime=startTime
     while(currentDay<=endDay){
         while(currentTime<endTime){
             if(grid[currentDay][currentTime].title=="_"){
-                return currentDay, currentTime, True
+                newGrid[currentDay][currentTime] = {
+                ...newGrid[currentDay][currentTime],
+                title:currentTitle,
+                flag:"soft",
+                SoftStart:startTime,
+                SoftStartDay:startDay,
+                SoftEnd:endTime,
+                SoftEndDay:endDay
+                }
+            return [newGrid, true]
             }
             currentTime+=1
         }
+        currentTime=startTime
         currentDay+=1
     }
     currentDay=startDay
@@ -28,49 +67,51 @@ function ScheduleTaskSoft(grid,startTime,startDay,endTime,endDay){
     while(currentDay<=endDay){
         while(currentTime<endTime){
             if(grid[currentDay][currentTime].flag=="soft"){
-                sDay, sTime, success = ScheduleTaskSoft(grid,s)
+                let conflicting=grid[currentDay][currentTime]
+                newGrid[currentDay][currentTime] = {
+                    ...newGrid[currentDay][currentTime],
+                    title:currentTitle,
+                    flag:"hard",
+                    Htime:currentTime,
+                    Hday:currentDay
+                    }
+                const [updatedGrid, softSuccess] = ScheduleTaskSoft(newGrid,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
+                newGrid=updatedGrid
+                success=softSuccess
+                if(success){
+                    newGrid[currentDay][currentTime] = {
+                        ...newGrid[currentDay][currentTime],
+                        title:currentTitle,
+                        flag:"soft",
+                        SoftStart:startTime,
+                        SoftStartDay:startDay,
+                        SoftEnd:endTime,
+                        SoftEndDay:endDay,
+                        Htime:"",
+                        Hday:""
+                    }
+                    return [newGrid, success]
+                }   
             }
             currentTime+=1
         }
+        currentTime=startTime
         currentDay+=1
     }
+    return [grid, false]
 }
 
-function NewTaskHard(newGrid,Hday,Htime,){
-    return {
-        ...newGrid[Hday][Htime],
-        title:title,
-        flag:priority,
-        Htime:Htime,
-        Hday:Hday
-    }
-}
-
-
-function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay){
-  const newGrid = [...grid];
-  if (priority === "hard"){
-    Hday, Htime, success = ScheduleTasksHard(grid,Hday,Htime)
-    if(success){
-      newGrid[Hday][Htime] = {
-        ...newGrid[Hday][Htime],
-        title:title,
-        flag:priority,
-        Htime:Htime,
-        Hday:Hday
-    }}
-  }else{
-    Sday, Stime, success = ScheduleTasksSoft(grid)
-    if(sucess){
-      newGrid[SoftStartDay][task_time] = {
-        ...newGrid[Sday][Stime],
-        title:title,
-        flag:priority,
-        SoftStart:SoftStart,
-        SoftStartDay:SoftStartDay,
-        SoftEnd:SoftEnd,
-        SoftEndDay:SoftEndDay
-    }} 
-  }
-  return newGrid;
-}
+// function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay){
+//   let newGrid=[...grid]
+//   let success = false
+//   if (priority === "hard"){
+//     [newGrid, success] = ScheduleTaskHard(grid,Hday,Htime,title)
+//   }else{
+//     [newGrid, success] = ScheduleTaskSoft(grid,SoftStart,SoftStartDay,SoftEnd,SoftEndDay,title) 
+//   }
+//   if(success){
+//     return newGrid
+//   }else{
+//     return grid
+//   }
+// }
