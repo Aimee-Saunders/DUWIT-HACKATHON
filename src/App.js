@@ -13,7 +13,13 @@ function createGrid(){
         id: j+":"+i,
         title:"_",
         task_id: "none",
-        flag: "_" });
+        flag: "_",
+        Htime: "",
+        Hday: "",
+        SoftStart: "",
+        SoftStartDay: "",
+        SoftEnd: "",
+        SoftEndDay: "" });
     }
   }
   return grid;
@@ -37,7 +43,7 @@ function NewTaskButton({grid,setGrid}){
   const [title, setTitle]=useState("");
   const [priority, setPriority] = useState("High");
   const [Htime, setHTime] = useState("");
-  const [Hday, setHDay] = useState("");
+  const [Hday, setHday] = useState("");
   const [SoftStart, setSoftStart] = useState("");
   const [SoftStartDay, setSoftStartDay] = useState("");
   const [SoftEnd, setSoftEnd] = useState("");
@@ -86,7 +92,7 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         Day:
-        <input type="text" onChange={e => setHDay(e.target.value)}></input>
+        <input type="number" onChange={e => setHday(e.target.value)}></input>
         </label>
         <br></br>
         If low priority
@@ -98,7 +104,7 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         Day:
-        <input type="text" onChange={e => setSoftStartDay(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftStartDay(e.target.value)}></input>
         </label>
         <br></br>
         <label>
@@ -108,7 +114,7 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         Day:
-        <input type="text" onChange={e => setSoftEndDay(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftEndDay(e.target.value)}></input>
         </label>
         <br></br>
         <br></br>
@@ -118,13 +124,27 @@ function NewTaskButton({grid,setGrid}){
   );
 }
 
-function RenderTasks(grid,title,priority){
+function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay){
   const task_time = Math.floor(Math.random()*25); 
   const newGrid = [...grid];
-  newGrid[0][task_time] = {
-    ...newGrid[0][task_time],
-    title:title,
-    flag:priority
+  if (priority === "hard"){
+    newGrid[Hday][Htime] = {
+      ...newGrid[Hday][Htime],
+      title:title,
+      flag:priority,
+      Htime:Htime,
+      Hday:Hday
+    }
+  }else{
+    newGrid[SoftStartDay][task_time] = {
+      ...newGrid[SoftStartDay][task_time],
+      title:title,
+      flag:priority,
+      SoftStart:SoftStart,
+      SoftStartDay:SoftStartDay,
+      SoftEnd:SoftEnd,
+      SoftEndDay:SoftEndDay
+    }    
   }
   return newGrid;
 }
