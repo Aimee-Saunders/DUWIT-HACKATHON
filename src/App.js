@@ -12,27 +12,40 @@ function createGrid(){
         slot: {start:i,end:i+1}, 
         id: j+":"+i,
         title:"_",
-        task_id: "none" });
+        task_id: "none",
+        flag: "_" });
     }
   }
   return grid;
 }
 
-function TimeSlot({title,hourstart,hourend}){
+function TimeSlot({title,flag,ClickFunction}){
   return(
-    <div class="timeslot">
+    <div class="timeslot" onclick={ClickFunction}>
       <p>{title}</p>
+      <p>{flag}</p>
     </div>
   )
+}
+
+function handleClick(){
+  return(
+  <p></p>)
 }
 
 function NewTaskButton({grid,setGrid}){
   const [title, setTitle]=useState("");
   const [priority, setPriority] = useState("High");
+  const [Htime, setHTime] = useState("");
+  const [Hday, setHDay] = useState("");
+  const [SoftStart, setSoftStart] = useState("");
+  const [SoftStartDay, setSoftStartDay] = useState("");
+  const [SoftEnd, setSoftEnd] = useState("");
+  const [SoftEndDay, setSoftEndDay] = useState("");
 
   function CreateNewTask(e){
     e.preventDefault();
-    const newGrid = RenderTasks(grid,title);
+    const newGrid = RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay);
     setGrid(newGrid);
   }
 
@@ -49,8 +62,7 @@ function NewTaskButton({grid,setGrid}){
           <input
             type="radio"
             name="Priority"
-            value="High"
-            checked={priority === "High"}
+            value="hard"
             onChange={e => setPriority(e.target.value)}
           />
           High Priority
@@ -59,34 +71,60 @@ function NewTaskButton({grid,setGrid}){
           <input
             type="radio"
             name="Priority"
-            value="Mid"
-            checked={priority === "Mid"}
-            onChange={e => setPriority(e.target.value)}
-          />
-          Mid Priority
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="Priority"
-            value="Low"
-            checked={priority === "Low"}
+            value="soft"
             onChange={e => setPriority(e.target.value)}
           />
           Low Priority
         </label>
+        <br></br>
+        If high priority
+        <br></br>
+        <label>
+        Choose a starting hour
+        <input type="number" onChange={e => setHTime(e.target.value)}></input>
+        </label>
+        <br></br>
+        <label>
+        Day:
+        <input type="text" onChange={e => setHDay(e.target.value)}></input>
+        </label>
+        <br></br>
+        If low priority
+        <br></br>
+        <label>
+        Interval start
+        <input type="number" onChange={e => setSoftStart(e.target.value)}></input>
+        </label>
+        <br></br>
+        <label>
+        Day:
+        <input type="text" onChange={e => setSoftStartDay(e.target.value)}></input>
+        </label>
+        <br></br>
+        <label>
+        Deadline
+        <input type="number" onChange={e => setSoftEnd(e.target.value)}></input>
+        </label>
+        <br></br>
+        <label>
+        Day:
+        <input type="text" onChange={e => setSoftEndDay(e.target.value)}></input>
+        </label>
+        <br></br>
+        <br></br>
       </div>
       <input type="submit" value="Create Task" />
     </form>
   );
 }
 
-function RenderTasks(grid,title){
+function RenderTasks(grid,title,priority){
   const task_time = Math.floor(Math.random()*25); 
   const newGrid = [...grid];
   newGrid[0][task_time] = {
     ...newGrid[0][task_time],
-    title:title
+    title:title,
+    flag:priority
   }
   return newGrid;
 }
@@ -111,7 +149,7 @@ function App() {
         <div className="Col">
           <p>{column[0].day}</p>
           {column.map((item)=>(
-            <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
+            <TimeSlot key={item.id} clickFunction={handleClick()} title={item.title} flag={item.flag}/>
           ))}
           </div>
         ))}
