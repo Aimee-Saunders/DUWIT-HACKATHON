@@ -52,7 +52,7 @@ d3.csv("../data/productivity.csv", d => {
     // Makes colour gradient based on average productivity score for the hour
     const color = d3.scaleSequential()
         .domain([1,5])
-        .interpolator(d3.interpolateLab("#f26c64", "#ffdd71", "#9fcd99"));
+        .interpolator(d3.interpolateRgbBasis(["#b10900", "#ffce3a", "#3b912a" ]));
 
     // Drawing, positioning, and colouring heatmap cells 
     g.selectAll("rect")
@@ -64,7 +64,7 @@ d3.csv("../data/productivity.csv", d => {
         .attr("y", d => y(d.day))
         .attr("width", x.bandwidth())
         .attr("height", y.bandwidth())
-        .attr("fill", d => color(d.avg))
+        .attr("fill", d => d.avg === 0 ? "#ffffff" : color(d.avg))
         .attr("stroke", "#333")
         .attr("stroke-width", 0.5)
         .on("mouseover",(event,d)=>{
@@ -115,56 +115,67 @@ d3.csv("../data/productivity.csv", d => {
 
 function showDistribution(d){
 
-const container = d3.select("#distribution");
+  const container = d3.select("#distribution");
 
-container.html("");
+  container.html("");
 
-const width = 400;
-const height = 200;
+  const width = 400;
+  const height = 200;
 
-const svg = container
-.append("svg")
-.attr("width",width)
-.attr("height",height);
+  const svg = container
+  .append("svg")
+  .attr("width",width)
+  .attr("height",height);
 
-const x = d3.scaleBand()
-.domain([1,2,3,4,5])
-.range([40,width-20])
-.padding(0.2);
+  // Makes x-axis
+  const x = d3.scaleBand()
+  .domain([1,2,3,4,5])
+  .range([40,width-20])
+  .padding(0.2);
 
-const y = d3.scaleLinear()
-.domain([0,d3.max(d.freq)])
-.range([height-30,10]);
+  // Makes y-axis
+  const y = d3.scaleLinear()
+  .domain([0,d3.max(d.freq)])
+  .range([height-30,10]);
 
-svg.selectAll("rect")
-.data(d.freq)
-.enter()
-.append("rect")
-.attr("x",(v,i)=>x(i+1))
-.attr("y",v=>y(v))
-.attr("width",x.bandwidth())
-.attr("height",v=>height-30-y(v))
-.attr("fill","#4682b4");
+  const barColor = d3.scaleSequential()
+    .domain([1, 5])
+    .interpolator(d3.interpolateRgbBasis(["#d73027", "#fee08b", "#1a9850" ]));
+  // Adds each bar
+  svg.selectAll("rect")
+  .data(d.freq)
+  .enter()
+  .append("rect")
+  .attr("x",(v,i)=>x(i+1))
+  .attr("y",v=>y(v))
+  .attr("width",x.bandwidth())
+  .attr("height",v=>height-30-y(v))
+  .attr("fill", (v, i) => barColor(i + 1))
+  .attr("stroke", "#333")
+  .attr("stroke-width", 0.5)
 
-svg.append("g")
-.attr("transform",`translate(0,${height-30})`)
-.call(d3.axisBottom(x));
+  svg.append("g")
+  .attr("transform",`translate(0,${height-30})`)
+  .call(d3.axisBottom(x));
 
-const maxY = d3.max(d.freq);
+  const maxY = d3.max(d.freq);
 
-svg.append("g")
-  .attr("transform","translate(40,0)")
-  .call(
-    d3.axisLeft(y)
-      .tickValues(d3.range(0, maxY + 1)) 
-  );
+  svg.append("g")
+    .attr("transform","translate(40,0)")
+    .call(
+      d3.axisLeft(y)
+        .tickValues(d3.range(0, maxY + 1)) 
+    );
 
 
-svg.append("text")
-.attr("x",width/2)
-.attr("y",height)
-.attr("text-anchor","middle")
-.text(`Distribution (Day ${d.day}, Hour ${d.hour})`);
+  svg.append("text")
+  .attr("x",width/2)
+  .attr("y",height)
+  .attr("text-anchor","middle")
+  .text(`Distribution (Day ${d.day}, Hour ${d.hour})`)
+  .style("font-family", "sans-serif")
+  .style("font-size", "12px");
+
 
 }
 });
