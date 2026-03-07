@@ -9,7 +9,7 @@ function createGrid(){
       grid[j].push({
         day:j,
         slot: {start:i,end:i+1}, 
-        id: j+":"+i,
+        id: {x:j,y:i},
         title:"_",
         task_id: "none",
         flag: "_",
@@ -24,18 +24,13 @@ function createGrid(){
   return grid;
 }
 
-function TimeSlot({title,flag,ClickFunction}){
+function TimeSlot({title,flag,onClickFunction}){
   return(
-    <div class="timeslot" onclick={ClickFunction}>
+    <div class="timeslot" onClick={onClickFunction}>
       <p>{title}</p>
       <p>{flag}</p>
     </div>
   )
-}
-
-function handleClick(){
-  return(
-  <p></p>)
 }
 
 function NewTaskButton({grid,setGrid}){
@@ -151,10 +146,27 @@ function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftE
 function App() {
   const [grid, setGrid] = useState(createGrid());
   const [tasks, setTasks] = useState([]);
+  const [popup, setPopup] = useState(null);
+  const[rating,setRating]=useState(1);
   const time_labels = [];
   for (let i = 0; i < 24; i++){
     time_labels.push({title:(i+":00-"+(i+1)+":00")});
   }
+  function OpenTask(day,hour){
+    setPopup({day,hour});
+    setRating(1);
+  };
+  function submit_rating(e){
+    const{day,hour}=popup;
+    e.preventDefault();
+    fetch("http://localhost:5000/productivity",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({day,hour,rating})
+    })
+    .then(res => res.json())
+    setPopup(null);
+  };
   return (
     <div className="App">
       <div className="scheduler">
@@ -168,12 +180,26 @@ function App() {
         <div className="Col">
           <p>{column[0].day}</p>
           {column.map((item)=>(
-            <TimeSlot key={item.id} clickFunction={handleClick()} title={item.title} flag={item.flag}/>
+            <TimeSlot key={item.id} onClickFunction={() => OpenTask(item.id.x,item.id.y)} title={item.title} flag={item.flag}/>
           ))}
           </div>
         ))}
       </div>
       <NewTaskButton grid={grid} setGrid={setGrid}/>
+      {popup && (
+        <div className="popup-overlay">
+        <div className="popup">
+        <h3>Rate slot: day {popup.day}, hour {popup.hour}</h3>
+        <form onSubmit={submit_rating}>
+          <input type="number" max={5} min={0} value={rating}
+          onChange={e => setRating(Number(e.target.value))}>
+          </input>
+          <input type="submit"></input>
+        </form>
+        <br></br>
+        </div>
+        </div>
+      )}
     </div>
   );
 }
