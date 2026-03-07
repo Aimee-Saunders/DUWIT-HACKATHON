@@ -1,22 +1,51 @@
-
-body{
-font-family:sans-serif;
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 30px;
+    color: #333;
+    text-align: center;
 }
 
-.cell{
-stroke:#eee;
-cursor:pointer;
+h1 {
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
-.tooltip{
-position:absolute;
-background:white;
-border:1px solid #ccc;
-padding:6px;
-font-size:12px;
-pointer-events:none;
+#chart, #legend {
+    display: block;
+    margin: 0 auto;
 }
 
-#distribution{
-margin-top:20px;
+.cell {
+    stroke: #ddd;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.cell:hover {
+    opacity: 0.8;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+}
+
+#distribution {
+    margin-top: 40px;
+}
+
+.hover-label {
+    font-size: 12px;
+    fill: #000;
+    pointer-events: none;
 }
