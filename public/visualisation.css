@@ -1,8 +1,22 @@
 
-.cell {
-  stroke: #eee;
+body{
+font-family:sans-serif;
 }
 
-.axis text {
-  font-size: 12px;
+.cell{
+stroke:#eee;
+cursor:pointer;
+}
+
+.tooltip{
+position:absolute;
+background:white;
+border:1px solid #ccc;
+padding:6px;
+font-size:12px;
+pointer-events:none;
+}
+
+#distribution{
+margin-top:20px;
 }
