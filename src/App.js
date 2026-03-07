@@ -10,8 +10,9 @@ function createGrid(){
       grid[j].push({
         day:j,
         slot: {start:i,end:i+1}, 
-        id: i,
-        title:"_" });
+        id: j+":"+i,
+        title:"_",
+        task_id: "none" });
     }
   }
   return grid;
@@ -25,8 +26,69 @@ function TimeSlot({title,hourstart,hourend}){
   )
 }
 
+function NewTaskButton(){
+  const [title, setTitle]=useState("");
+  const [priority, setPriority] = useState("High");
+
+  function CreateNewTask(e){
+    e.preventDefault();
+    RenderTasks({title,priority});
+    setTitle("");
+  }
+
+  return(
+    <form onSubmit={CreateNewTask}>
+      <input
+        type="text"
+        value={title}
+        onChange={e => setTitle(e.target.value)}
+        placeholder="Task Title"
+      />
+      <div>
+        <label>
+          <input
+            type="radio"
+            name="Priority"
+            value="High"
+            checked={priority === "High"}
+            onChange={e => setPriority(e.target.value)}
+          />
+          High Priority
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="Priority"
+            value="Mid"
+            checked={priority === "Mid"}
+            onChange={e => setPriority(e.target.value)}
+          />
+          Mid Priority
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="Priority"
+            value="Low"
+            checked={priority === "Low"}
+            onChange={e => setPriority(e.target.value)}
+          />
+          Low Priority
+        </label>
+      </div>
+      <input type="submit" value="Create Task" />
+    </form>
+  );
+}
+
+function RenderTasks(){
+  return(
+    <p></p>
+  )
+}
+
 function App() {
-  const [grid, setGrid] = useState(createGrid());
+  const [grid] = useState(createGrid());
   const time_labels = [];
   for (let i = 0; i < 24; i++){
     time_labels.push({title:(i+":00-"+(i+1)+":00")});
@@ -49,6 +111,7 @@ function App() {
           </div>
         ))}
       </div>
+      <NewTaskButton />
     </div>
   );
 }
