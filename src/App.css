@@ -51,12 +51,20 @@
   text-overflow: ellipsis;     
 }
 
+.timeslot:hover{
+  background-color: rgb(237, 235, 235);
+}
+.timeslot p {
+  font-size: clamp(8px, 2vw, 16px); /* min 8px, max 16px, scales with container */
+  margin: 0;
+}
+
 
 .scheduler {
   margin: 40px;
+  width: 800px;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 5px;
 }
 
 .Col {
