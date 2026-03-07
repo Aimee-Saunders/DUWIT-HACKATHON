@@ -17,7 +17,7 @@ IF THE EVENT IS HARD
         - Add hard event to schedule with flag hard
         END (SUCCESS)
 
-    ELSEIF ALL CONFLICTING EVENTS ARE HARD
+    ELSEIF ANY CONFLICTING EVENTS ARE HARD
         - Refuse new event
         - Offer to schedule as soft event, provide space for acceptable time period
         END (FAILURE)
