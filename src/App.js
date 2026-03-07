@@ -26,14 +26,14 @@ function TimeSlot({title,hourstart,hourend}){
   )
 }
 
-function NewTaskButton(){
+function NewTaskButton({grid,setGrid}){
   const [title, setTitle]=useState("");
   const [priority, setPriority] = useState("High");
 
   function CreateNewTask(e){
     e.preventDefault();
-    RenderTasks({title,priority});
-    setTitle("");
+    const newGrid = RenderTasks(grid,title);
+    setGrid(newGrid);
   }
 
   return(
@@ -81,14 +81,19 @@ function NewTaskButton(){
   );
 }
 
-function RenderTasks(){
-  return(
-    <p></p>
-  )
+function RenderTasks(grid,title){
+  const task_time = Math.floor(Math.random()*25); 
+  const newGrid = [...grid];
+  newGrid[0][task_time] = {
+    ...newGrid[0][task_time],
+    title:title
+  }
+  return newGrid;
 }
 
 function App() {
-  const [grid] = useState(createGrid());
+  const [grid, setGrid] = useState(createGrid());
+  const [tasks, setTasks] = useState([]);
   const time_labels = [];
   for (let i = 0; i < 24; i++){
     time_labels.push({title:(i+":00-"+(i+1)+":00")});
@@ -105,13 +110,13 @@ function App() {
         {grid.map((column)=>(
         <div className="Col">
           <p>{column[0].day}</p>
-          {grid[0].map((item)=>(
+          {column.map((item)=>(
             <TimeSlot key={item.id} title={item.title} day={item.day} hourstart={item.slot.start} hourend={item.slot.end}/>
           ))}
           </div>
         ))}
       </div>
-      <NewTaskButton />
+      <NewTaskButton grid={grid} setGrid={setGrid}/>
     </div>
   );
 }
