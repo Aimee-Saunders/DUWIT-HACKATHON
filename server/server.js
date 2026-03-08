@@ -7,7 +7,7 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-const CSV_PATH = path.join(__dirname,"productivity.csv");
+const CSV_PATH = path.join(__dirname,"../public/productivity.csv");
 
 app.post("/productivity", (req, res) => {
   try {

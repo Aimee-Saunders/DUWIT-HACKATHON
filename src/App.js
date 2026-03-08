@@ -1,5 +1,6 @@
 import { useState } from "react";
 import './App.css';
+import { ScheduleTaskHard, ScheduleTaskSoft } from './scheduling_functions.js'
 
 function createGrid(){
   const grid = [];
@@ -119,28 +120,32 @@ function NewTaskButton({grid,setGrid}){
 }
 
 function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay){
-  const task_time = Math.floor(Math.random()*25); 
-  const newGrid = [...grid];
+  let newGrid=[...grid]
+  let success = false
   if (priority === "hard"){
-    newGrid[Hday][Htime] = {
-      ...newGrid[Hday][Htime],
-      title:title,
-      flag:priority,
-      Htime:Htime,
-      Hday:Hday
-    }
+    [newGrid, success] = ScheduleTaskHard(grid,Hday,Htime,title)
   }else{
-    newGrid[SoftStartDay][task_time] = {
-      ...newGrid[SoftStartDay][task_time],
-      title:title,
-      flag:priority,
-      SoftStart:SoftStart,
-      SoftStartDay:SoftStartDay,
-      SoftEnd:SoftEnd,
-      SoftEndDay:SoftEndDay
-    }    
+    [newGrid, success] = ScheduleTaskSoft(grid,SoftStart,SoftStartDay,SoftEnd,SoftEndDay,title) 
   }
-  return newGrid;
+  if(success){
+    console.log("SUCCESS")
+    return newGrid
+
+  }else{
+    console.log("FAILURE")
+    return grid
+  }
+}
+
+function ProductivityGraph(){
+  return(
+    <iframe
+    src="/productivity.html"
+    width="950"
+    height="500"
+    title="Productivity Graph"
+    ></iframe>
+  )
 }
 
 function App() {
@@ -200,6 +205,7 @@ function App() {
         </div>
         </div>
       )}
+      <ProductivityGraph />
     </div>
   );
 }
