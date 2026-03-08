@@ -175,6 +175,26 @@ function ProductivityGraph(){
   )
 }
 
+function P5Timer(){
+  const iframeRef = useRef(null);
+  function resize(){
+    const iframe = iframeRef.current;
+    const height = iframe.contentWindow.document.body.scrollHeight;
+    iframe.style.height = height + "px";
+  }
+  return(
+    <iframe
+    ref={iframeRef}
+    src="/timer/index.html"
+    width="100%"
+    onLoad={resize}
+    style={{border:"none"}}
+    title="Timer"
+    ></iframe>
+  )
+}
+
+
 function App() {
   const [grid, setGrid] = useState(createGrid());
   const [tasks, setTasks] = useState([]);
@@ -201,6 +221,7 @@ function App() {
   };
   return (
     <div className="App">
+      <P5Timer />
       <div className="scheduler">
         <div className="Col times">
           <p>Times</p>

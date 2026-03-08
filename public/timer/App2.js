@@ -1,5 +1,5 @@
 import './App.css';
-import P5Timer from './p5timer';
+import P5Timer from '../p5timer';
 
 function App() {
   return (
