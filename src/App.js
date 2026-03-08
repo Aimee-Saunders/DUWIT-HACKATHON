@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './App.css';
 import { ScheduleTaskHard, ScheduleTaskSoft } from './scheduling_functions.js'
+import {useRef} from "react";
 
 function createGrid(){
   const grid = [];
@@ -156,11 +157,19 @@ function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftE
 }
 
 function ProductivityGraph(){
+  const iframeRef = useRef(null);
+  function resize(){
+    const iframe = iframeRef.current;
+    const height = iframe.contentWindow.document.body.scrollHeight;
+    iframe.style.height = height + "px";
+  }
   return(
     <iframe
+    ref={iframeRef}
     src="/productivity.html"
-    width="950"
-    height="500"
+    width="100%"
+    onLoad={resize}
+    style={{border:"none"}}
     title="Productivity Graph"
     ></iframe>
   )
