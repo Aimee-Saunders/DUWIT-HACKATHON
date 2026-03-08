@@ -31,7 +31,6 @@ function TimeSlot({title,flag,onClickFunction}){
   return(
     <div className="timeslot" onClick={onClickFunction} style={{background:'#800F2F', color:'#ffff'}}>
       <p>{title}</p>
-      <p>{flag}</p>
     </div>
   )
   }
@@ -39,7 +38,6 @@ function TimeSlot({title,flag,onClickFunction}){
   return(
     <div className="timeslot" onClick={onClickFunction} style={{background:'#FF8FA3'}}>
       <p>{title}</p>
-      <p>{flag}</p>
     </div>
   )
 }
@@ -47,7 +45,6 @@ else{
     return(
     <div className="timeslot" onClick={onClickFunction}>
       <p>{title}</p>
-      <p>{flag}</p>
     </div>
   )
 }

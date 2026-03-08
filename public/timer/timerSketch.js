@@ -1,5 +1,4 @@
 export const createTimerSketch = ({
-  durationSeconds,
   sparkleDurationMs,
   carWidth,
   carHeight,
@@ -7,15 +6,13 @@ export const createTimerSketch = ({
   carImagePath,
 }) => {
   return (p) => {
-    const duration = durationSeconds;
     let f1Car;
-    let startTime;
     let sparkles = [];
     let finished = false;
     let finishedAt = 0;
-    const startX = 50;
-    const endX = 850;
     const barY = 140;
+    const startX = 50 + carWidth / 2;
+    const endX = 850 - carWidth / 2;
 
     p.preload = () => {
       f1Car = p.loadImage(carImagePath);
@@ -23,11 +20,9 @@ export const createTimerSketch = ({
 
     p.setup = () => {
       p.createCanvas(900, 220);
-      startTime = p.millis();
       p.textAlign(p.CENTER, p.CENTER);
       p.textSize(32);
     };
-
     const createSparkles = (x, y, count = 12) => {
       for (let i = 0; i < count; i++) {
         sparkles.push({
@@ -52,31 +47,41 @@ export const createTimerSketch = ({
         p.fill(255, 215, 0, sparkle.life * 3);
         p.circle(sparkle.x, sparkle.y, 6);
 
-        if (sparkle.life <= 0) {
-          sparkles.splice(i, 1);
-        }
+        if (sparkle.life <= 0) sparkles.splice(i, 1);
       }
     };
 
     p.draw = () => {
       p.background(247, 240, 230);
 
-      const elapsed = (p.millis() - startTime) / 1000;
-      const remaining = Math.max(duration - elapsed, 0);
-      const progress = remaining / duration;
+      const now = new Date();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const remaining = 3600 - (minutes * 60 + seconds);
+      const progress = remaining / 3600;
+
       const currentX = p.map(progress, 0, 1, startX, endX);
+
+      const minsLeft = Math.floor(remaining / 60);
+      const secsLeft = remaining % 60;
 
       p.noStroke();
       p.fill(0);
-      p.text(`Time: ${Math.ceil(remaining)}s`, p.width / 2, 50);
-
-      p.stroke(180);
-      p.strokeWeight(10);
-      p.line(startX, barY, endX, barY);
+      p.text(
+        `Time left in hour: ${minsLeft}:${secsLeft
+          .toString()
+          .padStart(2, "0")}`,
+        p.width / 2,
+        50
+      );
 
       p.stroke(232, 137, 114);
       p.strokeWeight(10);
-      p.line(startX, barY, currentX, barY);
+      p.line(startX, barY, endX, barY);
+      p.stroke(180);
+      p.strokeWeight(10);
+      p.line(currentX, barY, endX, barY); 
 
       if (f1Car) {
         p.imageMode(p.CENTER);
@@ -97,11 +102,9 @@ export const createTimerSketch = ({
         if (p.millis() - finishedAt <= sparkleDurationMs) {
           createSparkles(startX, barY - carYOffset, 3);
         }
-
         drawSparkles();
-
         if (p.millis() - finishedAt > sparkleDurationMs && sparkles.length === 0) {
-          p.noLoop();
+          finished = false;
         }
       }
     };
