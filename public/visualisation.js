@@ -67,7 +67,7 @@ const tooltip = d3.select("body")
       .attr("y", d => y(label(d)))
       .attr("width", d => x(d.avg))
       .attr("height", y.bandwidth())
-      .attr("fill", "#6c9131");
+      .attr("fill", "#e24aa3");
 
   // Adding number to the end of the bar
   g.selectAll("text.value")
@@ -81,11 +81,13 @@ const tooltip = d3.select("body")
 
   // Moves down for next bar
   g.append("g")
-      .call(d3.axisLeft(y));
+    .style("font-family", "Georgia")
+    .call(d3.axisLeft(y));
 
   g.append("g")
-      .attr("transform", `translate(0, ${innerHeight})`)
-      .call(d3.axisBottom(x));
+    .style("font-family", "Georgia")
+    .attr("transform", `translate(0, ${innerHeight})`)
+    .call(d3.axisBottom(x));
 
   // Adding title of chart
   svg.append("text")
@@ -177,12 +179,21 @@ d3.csv("productivity.csv", d => {
           showDistribution(d);
         });
 
+      svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", 10)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .style("font-family", "Georgia")
+      .text("Your average productivity reported for each hour");
+
     // Layout for x-axis
     const xAxis = d3.axisBottom(x)
       .tickFormat(d => `${String(d).padStart(2, "0")}:00`);
 
     // Moving time labels to the start of each cell
     const xAxisG = g.append("g")
+    .style("font-family", "Georgia")
     .attr("transform", `translate(0,${chartHeight})`)
     .call(xAxis);
 
@@ -198,8 +209,8 @@ d3.csv("productivity.csv", d => {
       .tickFormat(d => ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][d]);
 
     g.append("g")
-        .call(yAxis);
-
+      .style("font-family", "Georgia")
+      .call(yAxis);
 
 
   // Best hours functionality
@@ -263,10 +274,12 @@ function showDistribution(d) {
 
   // Moves along for next bar
   g.append("g")
+    .style("font-family", "Georgia")
     .attr("transform", `translate(0, ${innerHeight})`)
     .call(d3.axisBottom(x));
 
   g.append("g")
+    .style("font-family", "Georgia")
     .call(d3.axisLeft(y).ticks(d3.max(d.freq)));
 
   // Bar chart title text
