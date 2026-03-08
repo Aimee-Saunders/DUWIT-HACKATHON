@@ -19,7 +19,7 @@ const tooltip = d3.select("body")
 
 
 // Parsing CSV file
-d3.csv("../data/productivity.csv", d => {
+d3.csv("productivity.csv", d => {
 
     const freq = d.frequencies.split("|").map(Number);
     const total = d3.sum(freq);

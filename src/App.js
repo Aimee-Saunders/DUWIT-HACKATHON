@@ -134,6 +134,17 @@ function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftE
   }
 }
 
+function ProductivityGraph(){
+  return(
+    <iframe
+    src="/productivity.html"
+    width="950"
+    height="500"
+    title="Productivity Graph"
+    ></iframe>
+  )
+}
+
 function App() {
   const [grid, setGrid] = useState(createGrid());
   const [tasks, setTasks] = useState([]);
@@ -191,6 +202,7 @@ function App() {
         </div>
         </div>
       )}
+      <ProductivityGraph />
     </div>
   );
 }
