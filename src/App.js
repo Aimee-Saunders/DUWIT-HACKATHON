@@ -100,7 +100,7 @@ function NewTaskButton({grid,setGrid}){
         <>
         <br></br>
         <label>
-        Start hour
+        Start hour:
         <input type="number" onChange={e => setHTime(Number(e.target.value))}></input>
         </label>
         <br></br>
@@ -115,23 +115,23 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         First day:
-        <input type="number" onChange={e => setSoftStartDay(Number(e.target.value))}></input>
+        <input type="number" min={0} max = {6} onChange={e => setSoftStartDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
         First hour:
-        <input type="number" onChange={e => setSoftStart(Number(e.target.value))}></input>
+        <input type="number" min={0} max = {23} onChange={e => setSoftStart(Number(e.target.value))}></input>
         </label>
 
         <br></br>
         <label>
         Deadline day:
-        <input type="number" onChange={e => setSoftEndDay(Number(e.target.value))}></input>
+        <input type="number" min={0} max = {6} onChange={e => setSoftEndDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
         Deadline hour:
-        <input type="number" onChange={e => setSoftEnd(Number(e.target.value))}></input>
+        <input type="number" min={0} max = {23} onChange={e => setSoftEnd(Number(e.target.value))}></input>
         </label>
         <br></br>
         </>

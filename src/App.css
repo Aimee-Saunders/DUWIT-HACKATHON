@@ -108,22 +108,100 @@ body{
 }
 
 .form-task {
-  max-width: 420px;
+  max-width: 340px;
   margin: 40px auto;
-  padding: 30px;
+  padding: 22px;
 
-  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 6px;
+
+.form-title {
+  padding: 9px 10px;
+  font-size: 14px;
+
+  border-radius: 6px;
+  border: 1px solid #ddd;
+
+  transition: all 0.2s ease;
+}
+
+.form-title:focus {
+  outline: none;
+  border-color: #dc409b;
+}
+
+
+.form-task label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+
+.form-task input[type="number"] {
+  width: 60px;
+  padding: 3px;
+
+  border-radius: 3px;
+  border: 1px solid #ddd;
+
+  font-size: 13px;
+  text-align: center;
+
+  transition: border 0.2s ease;
+}
+
+.form-task input[type="number"]:focus {
+  outline: none;
+  border-color: #e24aa3;
+}
+
+
+.form-task input[type="radio"] {
+  margin-right: 6px;
+}
+
+.form-task label:has(input[type="radio"]) {
+  justify-content: flex-start;
+  gap: 6px;
   font-size: 14px;
 }
 
-.form-title {
-  font-size: 16px;
+
+.button-submit {
+  margin-top: 6px;
+  padding: 10px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: #da3b92;
+  color: white;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.button-submit:hover {
+  background: #f14997;
+}
+
+.button-submit:active {
+  transform: scale(0.97);
 }
