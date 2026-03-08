@@ -96,7 +96,8 @@ function NewTaskButton({grid,setGrid}){
           />
           Low Priority
         </label>
-
+        {priority === "hard" &&(
+        <>
         <br></br>
         <label>
         Start Hour
@@ -107,7 +108,10 @@ function NewTaskButton({grid,setGrid}){
         Day:
         <input type="number" onChange={e => setHday(e.target.value)}></input>
         </label>
-
+        </>
+        )};
+        {priority === "soft" &&(
+        <>
         <br></br>
         <label>
         First Day of Possible Interval:
@@ -131,6 +135,8 @@ function NewTaskButton({grid,setGrid}){
         </label>
         <br></br>
         <br></br>
+        </>
+        )}
       </div>
       <input type="submit" value="Create Task" />
     </form>
@@ -200,6 +206,7 @@ function App() {
   const [popup, setPopup] = useState(null);
   const[rating,setRating]=useState(1);
   const time_labels = [];
+  const day_labels = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
   for (let i = 0; i < 24; i++){
     time_labels.push({title:(i+":00-"+(i+1)+":00")});
   }
@@ -230,7 +237,7 @@ function App() {
           </div>
         {grid.map((column)=>(
         <div className="Col">
-          <p>{column[0].day}</p>
+          <p>{day_labels[column[0].day]}</p>
           {column.map((item)=>(
             <TimeSlot key={item.id} onClickFunction={() => OpenTask(item.id.x,item.id.y)} title={item.title} flag={item.flag}/>
           ))}
