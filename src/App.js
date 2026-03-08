@@ -272,12 +272,8 @@ function App() {
   };
   return (
     <div className="App">
-<<<<<<< HEAD
       <h1>Task Scheduler</h1>
-=======
       <Toaster richColors position="top-right"/>
-      <P5Timer />
->>>>>>> 375c4e2f96946f03f0c9b59e670b225d2bd12542
       <div className="scheduler">
         <div className="Col times">
           <p>Times</p>

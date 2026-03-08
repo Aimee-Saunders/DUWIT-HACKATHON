@@ -4,8 +4,6 @@ function validSlot(grid,day,time){
 }
 
 export function ScheduleTaskHard(grid,rankedSlots,currentDay,currentTime,currentTitle){
-    console.log(rankedSlots)
-
     if (!validSlot(grid,currentDay,currentTime)){
         toast.error("Invalid time slot entered")
         return [grid, false]
