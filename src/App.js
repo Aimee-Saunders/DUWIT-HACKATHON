@@ -211,8 +211,7 @@ function ProductivityGraph(){
   const iframeRef = useRef(null);
   function resize(){
     const iframe = iframeRef.current;
-    const height = iframe.contentWindow.document.body.scrollHeight;
-    iframe.style.height = height + "px";
+    iframe.style.height = "2000px";
   }
   return(
     <iframe
@@ -230,8 +229,7 @@ function P5Timer(){
   const iframeRef = useRef(null);
   function resize(){
     const iframe = iframeRef.current;
-    const height = iframe.contentWindow.document.body.scrollHeight;
-    iframe.style.height = height + "px";
+    iframe.style.height = "225px";
   }
   return(
     <iframe
@@ -273,7 +271,7 @@ function App() {
   };
   return (
     <div className="App">
-      <P5Timer />
+      <h1>Task Scheduler</h1>
       <div className="scheduler">
         <div className="Col times">
           <p>Times</p>
@@ -305,6 +303,7 @@ function App() {
         </div>
         </div>
       )}
+      <P5Timer />
       <ProductivityGraph />
     </div>
   );

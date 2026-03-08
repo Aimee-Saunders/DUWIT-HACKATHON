@@ -52,7 +52,7 @@ export const createTimerSketch = ({
     };
 
     p.draw = () => {
-      p.background(247, 240, 230);
+      p.background('#f4f6fb');
 
       const now = new Date();
       const minutes = now.getMinutes();
@@ -76,7 +76,7 @@ export const createTimerSketch = ({
         50
       );
 
-      p.stroke(232, 137, 114);
+      p.stroke('#da3b92');
       p.strokeWeight(10);
       p.line(startX, barY, endX, barY);
       p.stroke(180);
