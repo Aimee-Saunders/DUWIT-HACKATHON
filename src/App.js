@@ -116,7 +116,7 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         First Day of Possible Interval:
-        <input type="number" onChange={e => setSoftStartDay(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftStartDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
@@ -133,11 +133,6 @@ function NewTaskButton({grid,setGrid}){
         <label>
         Deadline Hour of Possible Interval:
         <input type="number" onChange={e => setSoftEnd(Number(e.target.value))}></input>
-        </label>
-        <br></br>
-        <label>
-        Day:
-        <input type="number" onChange={e => setSoftEndDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         </>
