@@ -294,7 +294,7 @@ function App() {
       {popup && (
         <div className="popup-overlay">
         <div className="popup">
-        <h3>Rate slot: {day_labels[popup.day]}, {popup.hour}:00</h3>
+        <h3>Rate your productivity for this session: {day_labels[popup.day]}, {popup.hour}:00</h3>
         <form onSubmit={submit_rating}>
           <input type="number" max={5} min={0} value={rating}
           onChange={e => setRating(Number(e.target.value))}>
