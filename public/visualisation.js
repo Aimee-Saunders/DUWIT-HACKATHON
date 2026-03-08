@@ -27,8 +27,8 @@ const tooltip = d3.select("body")
   const container = d3.select("#tools");
   container.html("");
 
-  const width = 500;
-  const height = 350;
+  const width = 800;
+  const height = 500;
   const margin = { top: 20, right: 40, bottom: 40, left: 140 };
 
   const innerWidth = width - margin.left - margin.right;
