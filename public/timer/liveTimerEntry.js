@@ -16,7 +16,7 @@ if (mount && window.p5) {
     carWidth: CAR_WIDTH,
     carHeight: CAR_HEIGHT,
     carYOffset: CAR_Y_OFFSET,
-    carImagePath: '/public/f1car.png',
+    carImagePath: '../f1car.png',
   });
 
   mount.innerHTML = '';

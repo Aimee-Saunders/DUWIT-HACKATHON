@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './App.css';
 import { ScheduleTaskHard, ScheduleTaskSoft } from './scheduling_functions.js'
+import {useRef} from "react";
 
 function createGrid(){
   const grid = [];
@@ -26,12 +27,30 @@ function createGrid(){
 }
 
 function TimeSlot({title,flag,onClickFunction}){
+  if (flag === "hard"){
   return(
-    <div class="timeslot" onClick={onClickFunction}>
+    <div className="timeslot" onClick={onClickFunction} style={{background:'#800F2F', color:'#ffff'}}>
       <p>{title}</p>
       <p>{flag}</p>
     </div>
   )
+  }
+  else if(flag==="soft"){
+  return(
+    <div className="timeslot" onClick={onClickFunction} style={{background:'#FF8FA3'}}>
+      <p>{title}</p>
+      <p>{flag}</p>
+    </div>
+  )
+}
+else{
+    return(
+    <div className="timeslot" onClick={onClickFunction}>
+      <p>{title}</p>
+      <p>{flag}</p>
+    </div>
+  )
+}
 }
 
 function NewTaskButton({grid,setGrid}){
@@ -77,11 +96,11 @@ function NewTaskButton({grid,setGrid}){
           />
           Low Priority
         </label>
-        <br></br>
-        If high priority
+        {priority === "hard" &&(
+        <>
         <br></br>
         <label>
-        Choose a starting hour
+        Start Hour
         <input type="number" onChange={e => setHTime(e.target.value)}></input>
         </label>
         <br></br>
@@ -89,30 +108,35 @@ function NewTaskButton({grid,setGrid}){
         Day:
         <input type="number" onChange={e => setHday(e.target.value)}></input>
         </label>
-        <br></br>
-        If low priority
-        <br></br>
-        <label>
-        Interval start
-        <input type="number" onChange={e => setSoftStart(e.target.value)}></input>
-        </label>
+        </>
+        )};
+        {priority === "soft" &&(
+        <>
         <br></br>
         <label>
-        Day:
+        First Day of Possible Interval:
         <input type="number" onChange={e => setSoftStartDay(e.target.value)}></input>
         </label>
         <br></br>
         <label>
-        Deadline
-        <input type="number" onChange={e => setSoftEnd(e.target.value)}></input>
+        First Hour of Possible Interval:
+        <input type="number" onChange={e => setSoftStart(e.target.value)}></input>
         </label>
+
         <br></br>
         <label>
-        Day:
+        Deadline Day of Possible Interval:
         <input type="number" onChange={e => setSoftEndDay(e.target.value)}></input>
         </label>
         <br></br>
+        <label>
+        Deadline Hour of Possible Interval:
+        <input type="number" onChange={e => setSoftEnd(e.target.value)}></input>
+        </label>
         <br></br>
+        <br></br>
+        </>
+        )}
       </div>
       <input type="submit" value="Create Task" />
     </form>
@@ -138,15 +162,43 @@ function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftE
 }
 
 function ProductivityGraph(){
+  const iframeRef = useRef(null);
+  function resize(){
+    const iframe = iframeRef.current;
+    const height = iframe.contentWindow.document.body.scrollHeight;
+    iframe.style.height = height + "px";
+  }
   return(
     <iframe
+    ref={iframeRef}
     src="/productivity.html"
-    width="950"
-    height="500"
+    width="100%"
+    onLoad={resize}
+    style={{border:"none"}}
     title="Productivity Graph"
     ></iframe>
   )
 }
+
+function P5Timer(){
+  const iframeRef = useRef(null);
+  function resize(){
+    const iframe = iframeRef.current;
+    const height = iframe.contentWindow.document.body.scrollHeight;
+    iframe.style.height = height + "px";
+  }
+  return(
+    <iframe
+    ref={iframeRef}
+    src="/timer/index.html"
+    width="100%"
+    onLoad={resize}
+    style={{border:"none"}}
+    title="Timer"
+    ></iframe>
+  )
+}
+
 
 function App() {
   const [grid, setGrid] = useState(createGrid());
@@ -154,6 +206,7 @@ function App() {
   const [popup, setPopup] = useState(null);
   const[rating,setRating]=useState(1);
   const time_labels = [];
+  const day_labels = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
   for (let i = 0; i < 24; i++){
     time_labels.push({title:(i+":00-"+(i+1)+":00")});
   }
@@ -174,6 +227,7 @@ function App() {
   };
   return (
     <div className="App">
+      <P5Timer />
       <div className="scheduler">
         <div className="Col times">
           <p>Times</p>
@@ -183,7 +237,7 @@ function App() {
           </div>
         {grid.map((column)=>(
         <div className="Col">
-          <p>{column[0].day}</p>
+          <p>{day_labels[column[0].day]}</p>
           {column.map((item)=>(
             <TimeSlot key={item.id} onClickFunction={() => OpenTask(item.id.x,item.id.y)} title={item.title} flag={item.flag}/>
           ))}

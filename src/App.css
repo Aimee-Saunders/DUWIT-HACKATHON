@@ -98,3 +98,11 @@ body{
   margin: 0;
   text-align: center;
 }
+
+.timeslot .hard{
+  background-color: pink;
+}
+
+.timeslot .soft{
+  background-color: lightblue;
+}
