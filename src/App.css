@@ -205,3 +205,76 @@ body{
 .button-submit:active {
   transform: scale(0.97);
 }
+
+.rate-button {
+  margin-top: 6px;
+  padding: 10px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: #da3b92;
+  color: white;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.rate-button:hover {
+  background: #f14997;
+}
+
+.rate-button:active {
+  transform: scale(0.97);
+}
+
+.popup {
+  max-width: 340px;
+  margin: 40px auto;
+  padding: 22px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+
+.popup label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+
+.popup input[type="number"] {
+  width: 60px;
+  padding: 3px;
+
+  border-radius: 3px;
+  border: 1px solid #ddd;
+
+  font-size: 16px;
+  text-align: center;
+
+  transition: border 0.2s ease;
+}
+
+.form-task input[type="number"]:focus {
+  outline: none;
+  border-color: #e24aa3;
+}
+
