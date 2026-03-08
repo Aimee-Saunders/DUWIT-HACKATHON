@@ -19,11 +19,7 @@ const tooltip = d3.select("body")
 
 
 // Parsing CSV file
-<<<<<<< HEAD:src/visualisation.js
-d3.csv("../server/productivity.csv", d => {
-=======
 d3.csv("productivity.csv", d => {
->>>>>>> 8b7c20530edee5292d895ee1533919239f13c72f:public/visualisation.js
 
     const freq = d.frequencies.split("|").map(Number);
     const total = d3.sum(freq);
@@ -216,7 +212,7 @@ function showTop10(top10) {
 
   // Format label: "Tuesday 14:00"
   const label = d => {
-    const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     return `${days[d.day]} ${String(d.hour).padStart(2,"0")}:00`;
   };
 
