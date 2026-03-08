@@ -53,6 +53,15 @@ app.post("/productivity", (req, res) => {
   }
 });
 
+app.get("/csv", (req, res) => {
+  fs.readFile(CSV_PATH, "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.type("text/csv").send(data);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

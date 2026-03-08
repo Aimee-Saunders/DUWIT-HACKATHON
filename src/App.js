@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import './App.css';
 import { ScheduleTaskHard, ScheduleTaskSoft } from './scheduling_functions.js'
 import {useRef} from "react";
@@ -62,10 +62,11 @@ function NewTaskButton({grid,setGrid}){
   const [SoftStartDay, setSoftStartDay] = useState("");
   const [SoftEnd, setSoftEnd] = useState("");
   const [SoftEndDay, setSoftEndDay] = useState("");
+  const rankedSlots=useCSV()
 
-  function CreateNewTask(e){
+    function CreateNewTask(e){
     e.preventDefault();
-    const newGrid = RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay);
+    const newGrid = renderTasks(grid,rankedSlots,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay);
     setGrid(newGrid);
   }
 
@@ -101,12 +102,12 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         Start Hour
-        <input type="number" onChange={e => setHTime(e.target.value)}></input>
+        <input type="number" onChange={e => setHTime(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
         Day:
-        <input type="number" onChange={e => setHday(e.target.value)}></input>
+        <input type="number" onChange={e => setHday(Number(e.target.value))}></input>
         </label>
         </>
         )};
@@ -115,25 +116,24 @@ function NewTaskButton({grid,setGrid}){
         <br></br>
         <label>
         First Day of Possible Interval:
-        <input type="number" onChange={e => setSoftStartDay(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftStartDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
         First Hour of Possible Interval:
-        <input type="number" onChange={e => setSoftStart(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftStart(Number(e.target.value))}></input>
         </label>
 
         <br></br>
         <label>
         Deadline Day of Possible Interval:
-        <input type="number" onChange={e => setSoftEndDay(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftEndDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
         Deadline Hour of Possible Interval:
-        <input type="number" onChange={e => setSoftEnd(e.target.value)}></input>
+        <input type="number" onChange={e => setSoftEnd(Number(e.target.value))}></input>
         </label>
-        <br></br>
         <br></br>
         </>
         )}
@@ -143,13 +143,13 @@ function NewTaskButton({grid,setGrid}){
   );
 }
 
-function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay){
+function renderTasks(grid,rankedSlots,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftEnd,SoftEndDay){
   let newGrid=[...grid]
   let success = false
   if (priority === "hard"){
-    [newGrid, success] = ScheduleTaskHard(grid,Hday,Htime,title)
+    [newGrid, success] = ScheduleTaskHard(grid,rankedSlots,Hday,Htime,title)
   }else{
-    [newGrid, success] = ScheduleTaskSoft(grid,SoftStart,SoftStartDay,SoftEnd,SoftEndDay,title) 
+    [newGrid, success] = ScheduleTaskSoft(grid,rankedSlots,SoftStart,SoftStartDay,SoftEnd,SoftEndDay,title) 
   }
   if(success){
     console.log("SUCCESS")
@@ -159,6 +159,52 @@ function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftE
     console.log("FAILURE")
     return grid
   }
+}
+
+function useCSV(){
+  const [ranked, setRanked] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      const res = await fetch("http://localhost:5000/csv")
+      const text = await res.text()
+      const lines = text
+        .trim()
+        .split("\n")
+        .map(l => l.trim())
+        .filter(l => l.length > 0 && l.includes(","))
+
+      const parsed = lines.map(line => {
+        const parts = line.split(",")
+
+        if (parts.length < 3) return null
+
+        const [day, time, frequencies] = parts
+
+        if (!frequencies) return null
+
+        const freq = frequencies.split("|").map(Number)
+        const total = freq.reduce((a, b) => a + b, 0)
+
+        const avg = total === 0 ? 0 :
+          (freq[0]*1 + freq[1]*2 + freq[2]*3 + freq[3]*4 + freq[4]*5) / total
+
+        return {
+          day: Number(day),
+          time: Number(time),
+          avg,
+          freq
+        }
+      }).filter(Boolean);
+
+      const ranked = [...parsed].sort((a, b) => b.avg - a.avg);
+      setRanked(ranked);
+    }
+
+    load();
+  }, []);
+  console.log(ranked)
+  return ranked
 }
 
 function ProductivityGraph(){
