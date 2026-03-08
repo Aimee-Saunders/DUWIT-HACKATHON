@@ -1,9 +1,9 @@
 const width = 900;
-const height = 300;
+const height = 320;
 
 let margin = {top: 40, right: 30, bottom: 40, left: 70};
 
-const svg = d3.select("#chart");
+let svg = d3.select("#chart");
 
 const chartWidth = width - margin.left - margin.right;
 const chartHeight = height - margin.top - margin.bottom;
@@ -19,7 +19,7 @@ const tooltip = d3.select("body")
 
 
 // Parsing CSV file
-d3.csv("../data/productivity.csv", d => {
+d3.csv("../server/productivity.csv", d => {
 
     const freq = d.frequencies.split("|").map(Number);
     const total = d3.sum(freq);
@@ -114,6 +114,19 @@ d3.csv("../data/productivity.csv", d => {
 
     createLegend(color);
 
+
+  // Best hours functionality
+
+  const top10 = [...data]
+    .sort((a, b) => d3.descending(a.avg, b.avg))
+    .slice(0, 10);
+
+  showTop10(top10);
+  
+
+}
+);
+
 function showDistribution(d) {
 
   const container = d3.select("#distribution");
@@ -175,6 +188,84 @@ function showDistribution(d) {
     .style("font-family", "georgia")
     .style("font-size", "12px")
     .text(`Productivity Levels (Day ${d.day}, Hour ${d.hour})`);
+
 }
-});
+
+function showTop10(top10) {
+
+  const container = d3.select("#tool");
+  container.html("");
+
+  const width = 500;
+  const height = 350;
+  const margin = { top: 20, right: 20, bottom: 40, left: 140 };
+
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+
+  const svg = container.append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  const g = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  // Format label: "Tuesday 14:00"
+  const label = d => {
+    const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    return `${days[d.day]} ${String(d.hour).padStart(2,"0")}:00`;
+  };
+
+  // Scales
+  const x = d3.scaleLinear()
+      .domain([0, d3.max(top10, d => d.avg)])
+      .range([0, innerWidth]);
+
+  const y = d3.scaleBand()
+      .domain(top10.map(label))
+      .range([0, innerHeight])
+      .padding(0.2);
+
+  // Bars
+  g.selectAll("rect")
+      .data(top10)
+      .enter()
+      .append("rect")
+      .attr("y", d => y(label(d)))
+      .attr("width", d => x(d.avg))
+      .attr("height", y.bandwidth())
+      .attr("fill", "#4a90e2");
+
+  // Value labels
+  g.selectAll("text.value")
+      .data(top10)
+      .enter()
+      .append("text")
+      .attr("class", "value")
+      .attr("x", d => x(d.avg) + 5)
+      .attr("y", d => y(label(d)) + y.bandwidth() / 2 + 4)
+      .text(d => d.avg.toFixed(2));
+
+  // Y-axis
+  g.append("g")
+      .call(d3.axisLeft(y));
+
+  // X-axis
+  g.append("g")
+      .attr("transform", `translate(0, ${innerHeight})`)
+      .call(d3.axisBottom(x));
+
+  // Title
+  svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", 15)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .style("font-family", "Georgia")
+      .text("Top 10 Most Productive Day–Hour Slots");
+}
+
+
+
+
 
