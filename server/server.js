@@ -59,6 +59,7 @@ app.get("/csv", (req, res) => {
       return res.status(500).json({ error: err.message });
     }
     res.type("text/csv").send(data);
+    console.log(data);
   });
 });
 
