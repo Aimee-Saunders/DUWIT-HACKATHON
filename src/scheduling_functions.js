@@ -1,3 +1,4 @@
+import{toast} from "sonner"
 function validSlot(grid,day,time){
     return(day >= 0 && day < grid.length && time >= 0 && time < grid[0].length)
 }
@@ -6,7 +7,7 @@ export function ScheduleTaskHard(grid,rankedSlots,currentDay,currentTime,current
     console.log(rankedSlots)
 
     if (!validSlot(grid,currentDay,currentTime)){
-        alert("Invalid time slot")
+        toast.error("Invalid time slot entered")
         return [grid, false]
     }
     let newGrid = grid.map(col => col.map(cell => ({ ...cell })))
@@ -19,10 +20,11 @@ export function ScheduleTaskHard(grid,rankedSlots,currentDay,currentTime,current
             Htime: currentTime,
             Hday: currentDay
         }
+        toast.success("Task successfully scheduled")
         return [newGrid, true]
     }
     if (interval.flag === "hard") {
-        alert("There is already a hard task here");
+        toast.error("There is already a fixed task here");
         return [grid, false]
     }
     let conflicting = interval;
@@ -35,8 +37,10 @@ export function ScheduleTaskHard(grid,rankedSlots,currentDay,currentTime,current
     }
     const [updatedGrid, success] = ScheduleTaskSoft(newGrid,rankedSlots,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
     if (success){
+        toast.success("Successfully scheduled")
         return [updatedGrid, true]
     }
+    toast.error("Could not schedule task")
     return [grid, false];
 }
 
@@ -73,6 +77,7 @@ export function ScheduleTaskSoft(grid,rankedSlots,startTime,startDay,endTime,end
                         SoftEnd: endTime,
                         SoftEndDay: endDay
                     }
+                    toast.success("Task successfully scheduled")
                     return [newGrid, true]
                 }
             }
@@ -105,11 +110,13 @@ export function ScheduleTaskSoft(grid,rankedSlots,startTime,startDay,endTime,end
                             Htime: "",
                             Hday: ""
                         }
+                    toast.success("Tasks successfully scheduled")
                     return [updatedGrid, true]
                     }
                 }
             }
         }
     }
+    toast.error("Could not schedule tasks")
     return [grid, false]
 }
