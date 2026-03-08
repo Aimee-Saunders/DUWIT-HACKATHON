@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import './App.css';
 import { ScheduleTaskHard, ScheduleTaskSoft } from './scheduling_functions.js'
 import {useRef} from "react";
+import {Toaster} from "sonner";
 
 function createGrid(){
   const grid = [];
@@ -273,6 +274,7 @@ function App() {
   };
   return (
     <div className="App">
+      <Toaster richColors position="top-right"/>
       <P5Timer />
       <div className="scheduler">
         <div className="Col times">
