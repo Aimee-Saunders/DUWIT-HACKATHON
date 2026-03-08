@@ -74,8 +74,8 @@ function NewTaskButton({grid,setGrid}){
   }
 
   return(
-    <form onSubmit={CreateNewTask}>
-      <input
+    <form  className="form-task"onSubmit={CreateNewTask}>
+      <input className="form-title"
         type="text"
         value={title}
         onChange={e => setTitle(e.target.value)}
@@ -89,7 +89,7 @@ function NewTaskButton({grid,setGrid}){
             value="hard"
             onChange={e => setPriority(e.target.value)}
           />
-          High Priority
+          Fixed timeslot
         </label>
         <label>
           <input
@@ -98,50 +98,50 @@ function NewTaskButton({grid,setGrid}){
             value="soft"
             onChange={e => setPriority(e.target.value)}
           />
-          Low Priority
+          Flexible timeslot
         </label>
         {priority === "hard" &&(
         <>
         <br></br>
         <label>
-        Start Hour
+        Start hour
         <input type="number" onChange={e => setHTime(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
-        Day:
+        Start day:
         <input type="number" onChange={e => setHday(Number(e.target.value))}></input>
         </label>
         </>
-        )};
+        )}
         {priority === "soft" &&(
         <>
         <br></br>
         <label>
-        First Day of Possible Interval:
+        First day:
         <input type="number" onChange={e => setSoftStartDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
-        First Hour of Possible Interval:
+        First hour:
         <input type="number" onChange={e => setSoftStart(Number(e.target.value))}></input>
         </label>
 
         <br></br>
         <label>
-        Deadline Day of Possible Interval:
+        Deadline day:
         <input type="number" onChange={e => setSoftEndDay(Number(e.target.value))}></input>
         </label>
         <br></br>
         <label>
-        Deadline Hour of Possible Interval:
+        Deadline hour:
         <input type="number" onChange={e => setSoftEnd(Number(e.target.value))}></input>
         </label>
         <br></br>
         </>
         )}
       </div>
-      <input type="submit" value="Create Task" />
+      <input className="button-submit" type="submit" value="Create Task" />
     </form>
   );
 }
