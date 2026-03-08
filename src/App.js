@@ -29,7 +29,7 @@ function createGrid(){
 function TimeSlot({title,flag,onClickFunction}){
   if (flag === "hard"){
   return(
-    <div className="timeslot" onClick={onClickFunction} style={{background:'pink'}}>
+    <div className="timeslot" onClick={onClickFunction} style={{background:'#800F2F', color:'#ffff'}}>
       <p>{title}</p>
       <p>{flag}</p>
     </div>
@@ -37,7 +37,7 @@ function TimeSlot({title,flag,onClickFunction}){
   }
   else if(flag==="soft"){
   return(
-    <div className="timeslot" onClick={onClickFunction} style={{background:'lightblue'}}>
+    <div className="timeslot" onClick={onClickFunction} style={{background:'#FF8FA3'}}>
       <p>{title}</p>
       <p>{flag}</p>
     </div>
@@ -96,11 +96,10 @@ function NewTaskButton({grid,setGrid}){
           />
           Low Priority
         </label>
-        <br></br>
-        If high priority
+
         <br></br>
         <label>
-        Choose a starting hour
+        Start Hour
         <input type="number" onChange={e => setHTime(e.target.value)}></input>
         </label>
         <br></br>
@@ -108,27 +107,27 @@ function NewTaskButton({grid,setGrid}){
         Day:
         <input type="number" onChange={e => setHday(e.target.value)}></input>
         </label>
-        <br></br>
-        If low priority
-        <br></br>
-        <label>
-        Interval start
-        <input type="number" onChange={e => setSoftStart(e.target.value)}></input>
-        </label>
+
         <br></br>
         <label>
-        Day:
+        First Day of Possible Interval:
         <input type="number" onChange={e => setSoftStartDay(e.target.value)}></input>
         </label>
         <br></br>
         <label>
-        Deadline
-        <input type="number" onChange={e => setSoftEnd(e.target.value)}></input>
+        First Hour of Possible Interval:
+        <input type="number" onChange={e => setSoftStart(e.target.value)}></input>
+        </label>
+
+        <br></br>
+        <label>
+        Deadline Day of Possible Interval:
+        <input type="number" onChange={e => setSoftEndDay(e.target.value)}></input>
         </label>
         <br></br>
         <label>
-        Day:
-        <input type="number" onChange={e => setSoftEndDay(e.target.value)}></input>
+        Deadline Hour of Possible Interval:
+        <input type="number" onChange={e => setSoftEnd(e.target.value)}></input>
         </label>
         <br></br>
         <br></br>
