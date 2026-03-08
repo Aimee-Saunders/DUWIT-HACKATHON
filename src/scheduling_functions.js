@@ -2,7 +2,9 @@ function validSlot(grid,day,time){
     return(day >= 0 && day < grid.length && time >= 0 && time < grid[0].length)
 }
 
-export function ScheduleTaskHard(grid,currentDay,currentTime,currentTitle){
+export function ScheduleTaskHard(grid,rankedSlots,currentDay,currentTime,currentTitle){
+    console.log(rankedSlots)
+
     if (!validSlot(grid,currentDay,currentTime)){
         alert("Invalid time slot")
         return [grid, false]
@@ -31,83 +33,83 @@ export function ScheduleTaskHard(grid,currentDay,currentTime,currentTitle){
         Htime: currentTime,
         Hday: currentDay
     }
-    const [updatedGrid, success] = ScheduleTaskSoft(newGrid,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
+    const [updatedGrid, success] = ScheduleTaskSoft(newGrid,rankedSlots,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
     if (success){
         return [updatedGrid, true]
     }
     return [grid, false];
 }
 
-
-
-export function ScheduleTaskSoft(grid,startTime,startDay,endTime,endDay,currentTitle){
-    let newGrid = grid.map(col => col.map(cell => ({ ...cell })))
-    let day=startDay
-    let time=startTime
-    let end=24
-    while(day<=endDay){
-        if(day==endDay){
-            end=endTime
-        }
-        while(time<end){
-            let interval = newGrid[day][time]
-            if (interval.title === "_") {
-                newGrid[day][time] = {
-                    ...interval,
-                    title: currentTitle,
-                    flag: "soft",
-                    SoftStart: startTime,
-                    SoftStartDay: startDay,
-                    SoftEnd: endTime,
-                    SoftEndDay: endDay
-                }
-                return [newGrid, true]
-            }
-        time++
-        }
-    time=0
-    day++
+function inSlot(pInterval,startTime,startDay,endTime,endDay){
+    let result = true
+    if(pInterval.day==startDay && pInterval.time<startTime){
+        result=false
     }
+    if(pInterval.day==endDay && pInterval.time>=endTime){
+        result=false
+    }
+    if(pInterval.day<startDay || pInterval.day>endDay){
+        result=false
+    }
+    return result
+}
 
-    day=startDay
-    time=startTime
-    end=24
-    while(day<=endDay){
-        if(day==endDay){
-            end=endTime
-        }
-        while(time<end){
-            let interval = newGrid[day][time]
-            if (interval.flag === "soft" && interval.title !== currentTitle){
-                let conflicting = interval
-                newGrid[day][time] = {
-                    ...interval,
-                    title: currentTitle,
-                    flag: "hard",
-                    Htime: time,
-                    Hday: day
-                }
-                const [updatedGrid, success] = ScheduleTaskSoft(newGrid,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
-                if (success){
-                    updatedGrid[day][time] = {
-                        ...updatedGrid[day][time],
+export function ScheduleTaskSoft(grid,rankedSlots,startTime,startDay,endTime,endDay,currentTitle){
+    let newGrid = grid.map(col => col.map(cell => ({ ...cell })))
+    let pInterval={}
+    let interval={}
+    for(let i=0; i<rankedSlots.length; i++){
+        pInterval=rankedSlots[i]
+        if(pInterval.day!=null && pInterval.time!=null){
+            if(inSlot(pInterval,startTime,startDay,endTime,endDay)){
+                interval=newGrid[pInterval.day][pInterval.time]
+                if (interval.title === "_") {
+                    newGrid[pInterval.day][pInterval.time] = {
+                        ...interval,
                         title: currentTitle,
                         flag: "soft",
                         SoftStart: startTime,
                         SoftStartDay: startDay,
                         SoftEnd: endTime,
-                        SoftEndDay: endDay,
-                        Htime: "",
-                        Hday: ""
+                        SoftEndDay: endDay
                     }
-                    return [updatedGrid, true]
+                    return [newGrid, true]
                 }
             }
-        time++
         }
-    time=0
-    day++
     }
-
+    for(let i=0; i<rankedSlots.length; i++){
+        pInterval=rankedSlots[i]
+        if(pInterval.day!=null && pInterval.time!=null){
+            if(inSlot(pInterval,startTime,startDay,endTime,endDay)){
+                interval=newGrid[pInterval.day][pInterval.time]
+                if (interval.title === "soft") {
+                    let conflicting=interval
+                    newGrid[pInterval.day][pInterval.time] = {
+                        ...interval,
+                        title: currentTitle,
+                        flag: "hard",
+                        Hday: pInterval.day,
+                        Htime: pInterval.time
+                    }
+                    const [updatedGrid, success] = ScheduleTaskSoft(newGrid,rankedSlots,conflicting.SoftStart,conflicting.SoftStartDay,conflicting.SoftEnd,conflicting.SoftEndDay,conflicting.title)
+                    if (success){
+                        updatedGrid[pInterval.day][pInterval.time] = {
+                        ...updatedGrid[pInterval.day][pInterval.time],
+                            title: currentTitle,
+                            flag: "soft",
+                            SoftStart: startTime,
+                            SoftStartDay: startDay,
+                            SoftEnd: endTime,
+                            SoftEndDay: endDay,
+                            Htime: "",
+                            Hday: ""
+                        }
+                    return [updatedGrid, true]
+                    }
+                }
+            }
+        }
+    }
     return [grid, false]
 }
