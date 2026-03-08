@@ -63,7 +63,6 @@ function NewTaskButton({grid,setGrid}){
   const [SoftEnd, setSoftEnd] = useState("");
   const [SoftEndDay, setSoftEndDay] = useState("");
   let rankedSlots=useCSV()
-  rankedSlots.shift()
   console.log(rankedSlots[0])
   console.log(rankedSlots[1])
 
@@ -201,6 +200,7 @@ function useCSV(){
       }).filter(Boolean);
 
       const ranked = [...parsed].sort((a, b) => b.avg - a.avg);
+      ranked.shift()
       setRanked(ranked);
     }
 
