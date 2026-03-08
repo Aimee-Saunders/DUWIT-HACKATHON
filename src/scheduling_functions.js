@@ -1,3 +1,4 @@
+import './scheduling_functions.css';
 import{toast} from "sonner"
 function validSlot(grid,day,time){
     return(day >= 0 && day < grid.length && time >= 0 && time < grid[0].length)

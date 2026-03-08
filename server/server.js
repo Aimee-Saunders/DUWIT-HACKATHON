@@ -12,11 +12,9 @@ const CSV_PATH = path.join(__dirname,"../public/productivity.csv");
 app.post("/productivity", (req, res) => {
   try {
     const { day, hour, rating } = req.body;
-    console.log("Received:", day, hour, rating);
 
     fs.readFile(CSV_PATH, "utf8", (err, data) => {
       if (err) {
-        console.error("Read error:", err);
         return res.status(500).json({ error: err.message });
       }
 
@@ -41,14 +39,12 @@ app.post("/productivity", (req, res) => {
 
       fs.writeFile(CSV_PATH, [header, ...newRows].join("\n"), err => {
         if (err) {
-          console.error("Write error:", err);
           return res.status(500).json({ error: err.message });
         }
         res.json({ success: true });
       });
     });
   } catch (err) {
-    console.error("Unexpected error:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -59,7 +55,6 @@ app.get("/csv", (req, res) => {
       return res.status(500).json({ error: err.message });
     }
     res.type("text/csv").send(data);
-    console.log(data);
   });
 });
 
