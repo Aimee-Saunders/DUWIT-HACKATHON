@@ -27,7 +27,7 @@ function createGrid(){
 
 function TimeSlot({title,flag,onClickFunction}){
   return(
-    <div class="timeslot" onClick={onClickFunction}>
+    <div className="timeslot" onClick={onClickFunction}>
       <p>{title}</p>
       <p>{flag}</p>
     </div>
