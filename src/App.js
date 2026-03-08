@@ -128,8 +128,11 @@ function RenderTasks(grid,title,priority,Htime,Hday,SoftStart,SoftStartDay,SoftE
     [newGrid, success] = ScheduleTaskSoft(grid,SoftStart,SoftStartDay,SoftEnd,SoftEndDay,title) 
   }
   if(success){
+    console.log("SUCCESS")
     return newGrid
+
   }else{
+    console.log("FAILURE")
     return grid
   }
 }
