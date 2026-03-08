@@ -63,6 +63,7 @@ function NewTaskButton({grid,setGrid}){
   const [SoftEnd, setSoftEnd] = useState("");
   const [SoftEndDay, setSoftEndDay] = useState("");
   const rankedSlots=useCSV()
+  console.log(rankedSlots[0])
 
     function CreateNewTask(e){
     e.preventDefault();
