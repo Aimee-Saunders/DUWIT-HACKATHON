@@ -26,12 +26,30 @@ function createGrid(){
 }
 
 function TimeSlot({title,flag,onClickFunction}){
+  if (flag === "hard"){
   return(
+    <div className="timeslot" onClick={onClickFunction} style={{background:'pink'}}>
+      <p>{title}</p>
+      <p>{flag}</p>
+    </div>
+  )
+  }
+  else if(flag==="soft"){
+  return(
+    <div className="timeslot" onClick={onClickFunction} style={{background:'lightblue'}}>
+      <p>{title}</p>
+      <p>{flag}</p>
+    </div>
+  )
+}
+else{
+    return(
     <div className="timeslot" onClick={onClickFunction}>
       <p>{title}</p>
       <p>{flag}</p>
     </div>
   )
+}
 }
 
 function NewTaskButton({grid,setGrid}){
