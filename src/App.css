@@ -4,6 +4,8 @@
 
 .App-logo {
   height: 40vmin;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: url("../public/p5images/sketch3.png") center center / cover no-repeat;
   pointer-events: none;
 }
 
@@ -39,7 +41,7 @@
 
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background-color: #f4f6fb;
+  background: url("../public/p5images/sketch3.png") center center / cover no-repeat fixed;
 }
 
 .scheduler {

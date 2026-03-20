@@ -272,7 +272,10 @@ function App() {
   };
   return (
     <div className="App">
-      <h1>Task Scheduler</h1>
+      <h1 style={{
+          color: "white",
+          textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black"
+       }}>Task Scheduler</h1>
       <Toaster richColors position="top-right"/>
       <div className="scheduler">
         <div className="Col times">
